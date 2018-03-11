@@ -33,6 +33,7 @@ contract Meetup is Ownable {
        talks[totalTalks].talk_id = totalTalks;
        talks[totalTalks].title = _title;
        talks[totalTalks].location = _location;
+       talks[totalTalks].canceled = false;
        for ( uint i = 0 ;i < speakerAddress.length ; i++) {
             speakers[speakerAddress[i]].account = speakerAddress[i];
             speakers[speakerAddress[i]].talksId.push(totalTalks);
@@ -43,6 +44,32 @@ contract Meetup is Ownable {
        
 
        
+    }
+
+    function cancelTalk(uint talkId) {
+        require(bytes(talks[talkId].title).length>0);
+        talks[talkId].canceled = true;
+
+ }
+    function checkIfTalkCanceled(uint talkId) public view returns (bool) {
+        return talks[talkId].canceled;
+
+    }
+    function getTalk(uint talkId) public view returns
+    (
+
+        string title,
+        string location,
+        bool canceled,
+        address[] _speakerAddress
+    ) {
+      require(bytes(talks[talkId].title).length>0);
+     require(talks[talkId].canceled == false);
+      Talk memory talk = talks[talkId];
+      //todo define a for loop to get address and names of different speakers and return them
+     
+      return (talk.title,talk.location,talk.canceled,talk.speakers);
+
     }
 
 
